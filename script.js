@@ -2,7 +2,7 @@ console.log("Script loaded successfully");
 
 // Firebase Configuration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 // Firebase config object
 const firebaseConfig = {
@@ -44,6 +44,10 @@ form.addEventListener('submit', async (e) => {
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
 
+  // Disable submit button to prevent multiple submissions
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+
   try {
     const usersRef = ref(db, 'users'); // Reference to 'users' node
     const newUserRef = push(usersRef); // Create a unique key
@@ -55,13 +59,16 @@ form.addEventListener('submit', async (e) => {
     console.error('Error adding data:', error);
   }
 
+  // Re-enable the submit button
+  submitButton.disabled = false;
   form.reset();
 });
 
 // Load Data from Realtime Database
-function loadData() {
+async function loadData() {
   const usersRef = ref(db, 'users');
-  onValue(usersRef, (snapshot) => {
+  try {
+    const snapshot = await get(usersRef); // Fetch data once
     dataUl.innerHTML = ''; // Clear existing data
     const data = snapshot.val();
     if (data) {
@@ -71,8 +78,15 @@ function loadData() {
         dataUl.appendChild(li);
       }
     }
-  });
+  } catch (error) {
+    console.error("Error loading data:", error);
+  }
 }
 
 // Initial Load
 loadData();
+
+
+//git add .
+//git commit -m "New Message"
+//git push origin main
