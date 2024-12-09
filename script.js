@@ -109,6 +109,7 @@ function loadCustomers() {
 // Show Checklist Screen
 function showChecklistScreen(customerId, customer) {
   const checklistScreen = document.createElement('div');
+  checklistScreen.classList.add('checklist-page'); // Add a class for styling
   checklistScreen.innerHTML = `
     <h2>Checklist for ${customer.name}</h2>
     <label><input type="checkbox" id="messaged" ${customer.checklist.messaged ? 'checked' : ''}> Check if messaged</label><br>
@@ -118,7 +119,7 @@ function showChecklistScreen(customerId, customer) {
     <button id="back-to-show-customers">Back</button>
   `;
 
-  document.body.innerHTML = '';
+  document.body.innerHTML = ''; // Clear the current content
   document.body.appendChild(checklistScreen);
 
   // Save Checklist
@@ -137,25 +138,26 @@ function showChecklistScreen(customerId, customer) {
         status,
       });
       alert('Checklist updated successfully!');
-      showMainScreen();
+      showShowCustomersScreen(); // Return to the customer list
     } catch (error) {
       alert('Error updating checklist.');
       console.error('Error:', error);
     }
   });
 
-  // Back to Show Customers
+  // Back to Customer List
   document.getElementById('back-to-show-customers').addEventListener('click', () => {
     document.body.innerHTML = ''; // Clear the checklist screen
     document.body.appendChild(showCustomersScreen);
-    loadCustomers();
+    loadCustomers(); // Reload customer data
   });
 }
 
+
 // Load Customers on Show Customers Screen Load
-showCustomersButton.addEventListener('click', loadCustomers);
-
-
+backToMainFromShow.addEventListener('click', () => {
+  showMainScreen(); // Return to the main screen
+});
 
 //git add .
 //git commit -m "New Message"
