@@ -38,7 +38,6 @@ try {
   console.error("Database connection error:", error);
 }
 
-
 // Add Data to Realtime Database
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -60,25 +59,20 @@ form.addEventListener('submit', async (e) => {
 });
 
 // Load Data from Realtime Database
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-
-  try {
-    const usersRef = ref(db, 'users'); // Reference to 'users' node
-    const newUserRef = push(usersRef); // Create a unique key
-    await set(newUserRef, { name, email });
-    alert('Data submitted successfully!');
-    loadData(); // Refresh the data list
-  } catch (error) {
-    alert("Error: Failed to add data to the database.");
-    console.error('Error adding data:', error);
-  }
-
-  form.reset();
-});
-
+function loadData() {
+  const usersRef = ref(db, 'users');
+  onValue(usersRef, (snapshot) => {
+    dataUl.innerHTML = ''; // Clear existing data
+    const data = snapshot.val();
+    if (data) {
+      for (let key in data) {
+        const li = document.createElement('li');
+        li.textContent = `${data[key].name} - ${data[key].email}`;
+        dataUl.appendChild(li);
+      }
+    }
+  });
+}
 
 // Initial Load
 loadData();
