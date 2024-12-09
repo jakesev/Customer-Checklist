@@ -146,7 +146,7 @@ function showChecklistScreen(customerId, customer) {
   });
 
   // Back to Customer List
-  document.getElementById('back-to-show-customers').addEventListener('click', () => {
+  document.getElementById('main-screen').addEventListener('click', () => {
     document.body.innerHTML = ''; // Clear the checklist screen
     document.body.appendChild(showCustomersScreen);
     loadCustomers(); // Reload customer data
