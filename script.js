@@ -2,7 +2,7 @@ console.log("Script loaded successfully");
 
 // Firebase Configuration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import { getDatabase, ref, set, push, get, update, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 // Firebase config object
 const firebaseConfig = {
@@ -19,72 +19,142 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// DOM References
-const statusDiv = document.getElementById('connection-status');
+// DOM Elements
+const mainScreen = document.getElementById('main-screen');
+const addCustomerScreen = document.getElementById('add-customer-screen');
+const showCustomersScreen = document.getElementById('show-customers-screen');
+const customerList = document.getElementById('customer-list');
 const form = document.getElementById('data-form');
-const dataUl = document.getElementById('data-ul');
 
-// Connection Status
-try {
-  const usersRef = ref(db, 'users');
-  onValue(usersRef, () => {
-    statusDiv.textContent = "Connected to Firebase Realtime Database successfully!";
-    statusDiv.style.color = "green";
-  });
-} catch (error) {
-  alert("Error: Failed to connect to Firebase.");
-  statusDiv.textContent = "Error: Failed to connect to Firebase.";
-  statusDiv.style.color = "red";
-  console.error("Database connection error:", error);
+// Navigation Buttons
+const addCustomerButton = document.getElementById('add-customer-button');
+const showCustomersButton = document.getElementById('show-customers-button');
+const backToMainFromAdd = document.getElementById('back-to-main-from-add');
+const backToMainFromShow = document.getElementById('back-to-main-from-show');
+
+// Screen Navigation Functions
+function showMainScreen() {
+  mainScreen.style.display = 'block';
+  addCustomerScreen.style.display = 'none';
+  showCustomersScreen.style.display = 'none';
 }
 
-// Add Data to Realtime Database
+function showAddCustomerScreen() {
+  mainScreen.style.display = 'none';
+  addCustomerScreen.style.display = 'block';
+  showCustomersScreen.style.display = 'none';
+}
+
+function showShowCustomersScreen() {
+  mainScreen.style.display = 'none';
+  addCustomerScreen.style.display = 'none';
+  showCustomersScreen.style.display = 'block';
+}
+
+// Event Listeners for Navigation
+addCustomerButton.addEventListener('click', showAddCustomerScreen);
+showCustomersButton.addEventListener('click', showShowCustomersScreen);
+backToMainFromAdd.addEventListener('click', showMainScreen);
+backToMainFromShow.addEventListener('click', showMainScreen);
+
+// Add Customer to Database
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
 
-  // Disable submit button to prevent multiple submissions
-  const submitButton = form.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-
   try {
-    const usersRef = ref(db, 'users'); // Reference to 'users' node
-    const newUserRef = push(usersRef); // Create a unique key
-    await set(newUserRef, { name, email });
-    alert('Data submitted successfully!');
-    loadData(); // Refresh the data list
+    const customersRef = ref(db, 'customers'); // Reference to 'customers' node
+    const newCustomerRef = push(customersRef); // Create a unique key
+    await set(newCustomerRef, {
+      name,
+      email,
+      status: 'Pending',
+      checklist: {
+        messaged: false,
+        emailed: false,
+        called: false,
+      },
+    });
+    alert('Customer added successfully!');
+    form.reset();
+    showMainScreen(); // Go back to the main screen after adding
   } catch (error) {
-    alert("Error: Failed to add data to the database.");
-    console.error('Error adding data:', error);
+    alert("Error: Failed to add customer.");
+    console.error('Error adding customer:', error);
   }
-
-  // Re-enable the submit button
-  submitButton.disabled = false;
-  form.reset();
 });
 
-// Load Data from Realtime Database
-async function loadData() {
-  const usersRef = ref(db, 'users');
-  try {
-    const snapshot = await get(usersRef); // Fetch data once
-    dataUl.innerHTML = ''; // Clear existing data
-    const data = snapshot.val();
-    if (data) {
-      for (let key in data) {
+// Load Customers and Show in List
+function loadCustomers() {
+  const customersRef = ref(db, 'customers');
+  onValue(customersRef, (snapshot) => {
+    customerList.innerHTML = ''; // Clear existing list
+    const customers = snapshot.val();
+    if (customers) {
+      for (let key in customers) {
+        const customer = customers[key];
         const li = document.createElement('li');
-        li.textContent = `${data[key].name} - ${data[key].email}`;
-        dataUl.appendChild(li);
+        li.textContent = `${customer.name} - ${customer.status}`;
+        const viewChecklistButton = document.createElement('button');
+        viewChecklistButton.textContent = 'View Checklist';
+        viewChecklistButton.addEventListener('click', () => showChecklistScreen(key, customer));
+        li.appendChild(viewChecklistButton);
+        customerList.appendChild(li);
       }
     }
-  } catch (error) {
-    console.error("Error loading data:", error);
-  }
+  });
 }
 
-// Initial Load
-loadData();
+// Show Checklist Screen
+function showChecklistScreen(customerId, customer) {
+  const checklistScreen = document.createElement('div');
+  checklistScreen.innerHTML = `
+    <h2>Checklist for ${customer.name}</h2>
+    <label><input type="checkbox" id="messaged" ${customer.checklist.messaged ? 'checked' : ''}> Check if messaged</label><br>
+    <label><input type="checkbox" id="emailed" ${customer.checklist.emailed ? 'checked' : ''}> Check if emailed</label><br>
+    <label><input type="checkbox" id="called" ${customer.checklist.called ? 'checked' : ''}> Check if called</label><br>
+    <button id="save-checklist">Save</button>
+    <button id="back-to-show-customers">Back</button>
+  `;
+
+  document.body.innerHTML = '';
+  document.body.appendChild(checklistScreen);
+
+  // Save Checklist
+  document.getElementById('save-checklist').addEventListener('click', async () => {
+    const messaged = document.getElementById('messaged').checked;
+    const emailed = document.getElementById('emailed').checked;
+    const called = document.getElementById('called').checked;
+
+    const updatedChecklist = { messaged, emailed, called };
+    const status =
+      messaged && emailed && called ? 'Finished Checklist (Waiting Install)' : 'Sold';
+
+    try {
+      await update(ref(db, `customers/${customerId}`), {
+        checklist: updatedChecklist,
+        status,
+      });
+      alert('Checklist updated successfully!');
+      showMainScreen();
+    } catch (error) {
+      alert('Error updating checklist.');
+      console.error('Error:', error);
+    }
+  });
+
+  // Back to Show Customers
+  document.getElementById('back-to-show-customers').addEventListener('click', () => {
+    document.body.innerHTML = ''; // Clear the checklist screen
+    document.body.appendChild(showCustomersScreen);
+    loadCustomers();
+  });
+}
+
+// Load Customers on Show Customers Screen Load
+showCustomersButton.addEventListener('click', loadCustomers);
+
 
 
 //git add .

@@ -3,26 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Webpage</title>
+  <title>Customer Management</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Firebase Database Connection</h1>
+  <h1>Customer Management</h1>
   <div id="connection-status" style="margin: 20px; font-weight: bold;"></div>
 
-  <form id="data-form">
-    <input type="text" id="name" placeholder="Enter your name" required />
-    <input type="email" id="email" placeholder="Enter your email" required />
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="data-list">
-    <h2>Submitted Data:</h2>
-    <ul id="data-ul"></ul>
+  <!-- Main Screen -->
+  <div id="main-screen">
+    <button id="add-customer-button">Add Customer</button>
+    <button id="show-customers-button">Show Customers</button>
   </div>
-<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js"></script>
 
-<script src="script.js" type="module"></script>
+  <!-- Add Customer Screen -->
+  <div id="add-customer-screen" style="display: none;">
+    <h2>Add a New Customer</h2>
+    <form id="data-form">
+      <input type="text" id="name" placeholder="Enter customer name" required />
+      <input type="email" id="email" placeholder="Enter customer email" required />
+      <button type="submit">Submit</button>
+    </form>
+    <button id="back-to-main-from-add">Back</button>
+  </div>
+
+  <!-- Show Customers Screen -->
+  <div id="show-customers-screen" style="display: none;">
+    <h2>Customer List</h2>
+    <ul id="customer-list"></ul>
+    <button id="back-to-main-from-show">Back</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
 </html>
