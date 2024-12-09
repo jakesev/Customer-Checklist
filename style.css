@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+form {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+form input, form button {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+#data-list {
+  margin-top: 20px;
+}

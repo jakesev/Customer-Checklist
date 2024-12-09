@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Webpage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Firebase Database Connection</h1>
+  <div id="connection-status" style="margin: 20px; font-weight: bold;"></div>
+
+  <form id="data-form">
+    <input type="text" id="name" placeholder="Enter your name" required />
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="data-list">
+    <h2>Submitted Data:</h2>
+    <ul id="data-ul"></ul>
+  </div>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js"></script>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>
