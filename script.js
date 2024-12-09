@@ -106,21 +106,27 @@ function loadCustomers() {
   });
 }
 
-// Show Checklist Screen
+
 function showChecklistScreen(customerId, customer) {
+  // Clear current content and dynamically create the checklist screen
+  showCustomersScreen.style.display = 'none'; // Hide the customer list screen
+
   const checklistScreen = document.createElement('div');
   checklistScreen.classList.add('checklist-page'); // Add a class for styling
   checklistScreen.innerHTML = `
     <h2>Checklist for ${customer.name}</h2>
-    <label><input type="checkbox" id="messaged" ${customer.checklist.messaged ? 'checked' : ''}> Check if messaged</label><br>
-    <label><input type="checkbox" id="emailed" ${customer.checklist.emailed ? 'checked' : ''}> Check if emailed</label><br>
-    <label><input type="checkbox" id="called" ${customer.checklist.called ? 'checked' : ''}> Check if called</label><br>
-    <button id="save-checklist">Save</button>
-    <button id="back-to-show-customers">Back</button>
+    <div class="checklist-items">
+      <label><input type="checkbox" id="messaged" ${customer.checklist.messaged ? 'checked' : ''}> Check if messaged</label><br>
+      <label><input type="checkbox" id="emailed" ${customer.checklist.emailed ? 'checked' : ''}> Check if emailed</label><br>
+      <label><input type="checkbox" id="called" ${customer.checklist.called ? 'checked' : ''}> Check if called</label><br>
+    </div>
+    <div class="checklist-buttons">
+      <button id="save-checklist">Save</button>
+      <button id="back-to-show-customers">Back</button>
+    </div>
   `;
 
-  document.body.innerHTML = ''; // Clear the current content
-  document.body.appendChild(checklistScreen);
+  document.body.appendChild(checklistScreen); // Append the new checklist content
 
   // Save Checklist
   document.getElementById('save-checklist').addEventListener('click', async () => {
@@ -138,6 +144,7 @@ function showChecklistScreen(customerId, customer) {
         status,
       });
       alert('Checklist updated successfully!');
+      checklistScreen.remove(); // Remove the checklist screen
       showShowCustomersScreen(); // Return to the customer list
     } catch (error) {
       alert('Error updating checklist.');
@@ -146,12 +153,12 @@ function showChecklistScreen(customerId, customer) {
   });
 
   // Back to Customer List
-  document.getElementById('main-screen').addEventListener('click', () => {
-    document.body.innerHTML = ''; // Clear the checklist screen
-    document.body.appendChild(showCustomersScreen);
-    loadCustomers(); // Reload customer data
+  document.getElementById('back-to-show-customers').addEventListener('click', () => {
+    checklistScreen.remove(); // Remove the checklist screen
+    showShowCustomersScreen(); // Go back to the customer list screen
   });
 }
+
 
 
 // Load Customers on Show Customers Screen Load
