@@ -142,82 +142,46 @@ form button:hover {
 
 /* Checklist Page */
 .checklist-page {
-  background: rgba(255, 255, 255, 0.2); /* Slightly more visible background */
-  border-radius: 15px;
-  padding: 30px;
-  width: 500px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.5s ease-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* Header for the Checklist Page */
 .checklist-page h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #ffffff;
-  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 1.5rem;
+  margin-bottom: 15px;
 }
 
-/* Checklist Items */
 .checklist-page label {
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  font-size: 1.2rem;
-  color: #ffffff;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+  display: block;
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #fff;
 }
 
 .checklist-page input[type="checkbox"] {
-  margin-right: 15px;
-  transform: scale(1.2);
-  cursor: pointer;
-  accent-color: #4caf50; /* Green checkbox accent color */
+  margin-right: 10px;
 }
 
-/* Buttons */
 .checklist-page button {
-  background-color: #4caf50;
+  background-color: #2196f3;
   color: #fff;
-  padding: 12px 20px;
-  font-size: 1.1rem;
+  padding: 10px 15px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .checklist-page button:hover {
-  background-color: #45a049;
-  transform: translateY(-3px);
-}
-
-.checklist-page button:not(:last-child) {
-  margin-right: 10px;
-}
-
-/* Success/Completion Styles */
-.checklist-page .completed {
-  color: #4caf50;
-  font-weight: bold;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-/* Back to Customer List Button */
-.checklist-page #back-to-show-customers {
-  background-color: #2196f3;
-  margin-top: 10px;
-}
-
-.checklist-page #back-to-show-customers:hover {
   background-color: #1e88e5;
+  transform: scale(1.05);
 }
-
 
 /* Animations */
 @keyframes fadeIn {
