@@ -22,6 +22,12 @@ const db = getDatabase(app);
 const form = document.getElementById("data-form");
 const mainScreen = document.getElementById("main-screen");
 const customerList = document.getElementById("customer-list");
+const addCustomerScreen = document.getElementById("add-customer-screen");
+const showCustomersScreen = document.getElementById("show-customers-screen");
+const addCustomerButton = document.getElementById("add-customer-button");
+const showCustomersButton = document.getElementById("show-customers-button");
+const backToMainFromAdd = document.getElementById("back-to-main-from-add");
+const backToMainFromShow = document.getElementById("back-to-main-from-show");
 
 // Navigation Functions
 function showMainScreen() {
@@ -30,13 +36,30 @@ function showMainScreen() {
   showCustomersScreen.style.display = "none";
 }
 
-function showChecklistScreen(customerId, customer) {
-  console.log("Show checklist for:", customerId, customer);
+function showAddCustomerScreen() {
+  mainScreen.style.display = "none";
+  addCustomerScreen.style.display = "block";
+  showCustomersScreen.style.display = "none";
 }
 
+function showShowCustomersScreen() {
+  mainScreen.style.display = "none";
+  addCustomerScreen.style.display = "none";
+  showCustomersScreen.style.display = "block";
+}
+
+// Event Listeners for Navigation
+addCustomerButton.addEventListener("click", showAddCustomerScreen);
+showCustomersButton.addEventListener("click", showShowCustomersScreen);
+backToMainFromAdd.addEventListener("click", showMainScreen);
+backToMainFromShow.addEventListener("click", showMainScreen);
+
 // Initialize Modules
-addCustomer(db, form, showMainScreen);
-loadCustomers(db, customerList, showChecklistScreen);
+document.addEventListener("DOMContentLoaded", () => {
+  addCustomer(db, form, showMainScreen);
+  loadCustomers(db, customerList, console.log);
+});
+
 
 
 //git add .   
