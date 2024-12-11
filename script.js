@@ -37,3 +37,8 @@ function showChecklistScreen(customerId, customer) {
 // Initialize Modules
 addCustomer(db, form, showMainScreen);
 loadCustomers(db, customerList, showChecklistScreen);
+
+
+//git add .   
+//git commit -m "New Message"
+//git push origin main  
