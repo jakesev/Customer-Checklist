@@ -121,8 +121,6 @@ form button:hover {
   transform: scale(1.1);
 }
 
-
-
 /* Connection Status */
 #connection-status {
   font-weight: bold;
