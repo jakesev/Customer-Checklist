@@ -121,50 +121,6 @@ form button:hover {
   transform: scale(1.1);
 }
 
-/* Table Styling */
-#customer-table {
-  width: 100%;
-  max-width: 800px;
-  border-collapse: collapse;
-  margin: 20px auto;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-#customer-table th,
-#customer-table td {
-  padding: 15px;
-  text-align: left;
-  color: #ffffff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-#customer-table th {
-  background-color: #4caf50;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-#customer-table tbody tr:hover {
-  background-color: rgba(76, 175, 80, 0.5);
-}
-
-#customer-table td button {
-  background-color: #ff9800;
-  color: #ffffff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#customer-table td button:hover {
-  background-color: #fb8c00;
-  transform: scale(1.05);
-}
 
 
 /* Connection Status */
