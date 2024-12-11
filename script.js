@@ -5,13 +5,13 @@ import { loadCustomers } from "./displayCustomers.js";
 
 // Firebase Configuration
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  databaseURL: "your-database-url",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-messaging-sender-id",
-  appId: "your-app-id",
+  apiKey: "AIzaSyA8CzhnwFAc2LnnO49xKrAti8eE-HTgs-U",
+  authDomain: "customer-checklist.firebaseapp.com",
+  databaseURL: "https://customer-checklist-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "customer-checklist",
+  storageBucket: "customer-checklist.firebasestorage.app",
+  messagingSenderId: "573424994833",
+  appId: "1:573424994833:web:43f25adb3edfca693a7fb0",
 };
 
 // Initialize Firebase
