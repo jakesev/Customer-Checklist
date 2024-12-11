@@ -49,7 +49,9 @@ function showShowCustomersScreen() {
   mainScreen.style.display = 'none';
   addCustomerScreen.style.display = 'none';
   showCustomersScreen.style.display = 'block';
+  loadCustomers(); // Ensure customers are loaded
 }
+
 
 // Event Listeners for Navigation
 addCustomerButton.addEventListener('click', showAddCustomerScreen);
@@ -89,11 +91,13 @@ form.addEventListener('submit', async (e) => {
 function loadCustomers() {
   const customersRef = ref(db, 'customers');
   onValue(customersRef, (snapshot) => {
+    console.log("Snapshot received:", snapshot.val()); // Check data
     customerList.innerHTML = ''; // Clear existing list
     const customers = snapshot.val();
+  
     if (customers) {
-      for (let key in customers) {
-        const customer = customers[key];
+      Object.entries(customers).forEach(([key, customer]) => {
+        console.log("Processing customer:", customer);
         const li = document.createElement('li');
         li.textContent = `${customer.name} - ${customer.status}`;
         const viewChecklistButton = document.createElement('button');
@@ -101,10 +105,13 @@ function loadCustomers() {
         viewChecklistButton.addEventListener('click', () => showChecklistScreen(key, customer));
         li.appendChild(viewChecklistButton);
         customerList.appendChild(li);
-      }
+      });    
+    } else {
+      console.log("No customers found.");
+      customerList.innerHTML = '<li>No customers available.</li>';
     }
   });
-}
+  
 
 
 function showChecklistScreen(customerId, customer) {
@@ -169,3 +176,6 @@ backToMainFromShow.addEventListener('click', () => {
 //git add .
 //git commit -m "New Message"
 //git push origin main
+
+
+//main-screen
