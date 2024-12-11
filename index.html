@@ -22,17 +22,36 @@
     <form id="data-form">
       <input type="text" id="name" placeholder="Enter customer name" required />
       <input type="email" id="email" placeholder="Enter customer email" required />
+      <input type="text" id="number" placeholder="Enter phone number" required />
+      <input type="date" id="initial-quote-date" placeholder="Initial Quote Date" required />
+      <input type="text" id="address" placeholder="Enter customer address" required />
       <button type="submit">Submit</button>
     </form>
     <button id="back-to-main-from-add">Back</button>
   </div>
+  
 
   <!-- Show Customers Screen -->
   <div id="show-customers-screen" style="display: none;">
     <h2>Customer List</h2>
-    <ul id="customer-list"></ul>
+    <table id="customer-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Number</th>
+          <th>Initial Quote Date</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="customer-table-body">
+        <!-- Rows will be dynamically added here -->
+      </tbody>
+    </table>
     <button id="back-to-main-from-show">Back</button>
   </div>
+  
 
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js"></script>
