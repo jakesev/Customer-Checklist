@@ -18,9 +18,6 @@
       <button id="placeholder-button" class="btn secondary" type="button">
         <i class='bx bx-dots-horizontal-rounded'></i> View Customers
       </button>
-      
-
-
     </div>
   </section>
 
@@ -52,6 +49,74 @@
       <button id="back-to-main-from-add" class="btn secondary" type="button">Back</button>
     </form>
   </section>
+
+<!-- View Customers Screen -->
+<section id="view-customers-screen" class="screen hidden">
+  <div class="form-card">
+    <h2 class="form-title">View Customers</h2>
+    <div class="button-group">
+      <button id="btn-follow-up" class="btn primary">Need to Follow Up</button>
+      <button id="btn-converted" class="btn primary">Converted Customers</button>
+      <button id="btn-completed" class="btn primary">Completed Installations</button>
+      <button id="btn-lost" class="btn secondary">Lost Customers</button>
+    </div>
+    <button id="back-to-main-from-view" class="btn secondary">Back</button>
+  </div>
+</section>
+
+<!-- Table Screen -->
+<section id="customers-table-screen" class="screen hidden">
+  <div class="form-card">
+    <h2 id="table-title" class="form-title">Customers Table</h2>
+    <table class="customers-table">
+      <thead>
+        <tr id="table-headers">
+          <!-- Dynamic Headers -->
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Dynamic Rows -->
+      </tbody>
+    </table>
+    <button id="back-to-view-from-table" class="btn secondary">Back</button>
+  </div>
+</section>
+
+<!-- Converted Customer Screen -->
+<section id="customers-table-screen" class="screen hidden">
+  <div class="form-card">
+    <h2 id="table-title" class="form-title">Converted Customers</h2>
+    <div class="customers-table-container">
+      <table class="customers-table">
+        <thead>
+          <tr id="table-headers">
+            <th>Name</th>
+            <th>Email</th>
+            <th>Number</th>
+            <th>Measured Date</th>
+            <th>Check Map & Quote Supply</th>
+            <th>Check Supply</th>
+            <th>Check Supply Pickup Location</th>
+            <th>Pickup Location Date</th>
+            <th>Check Installer</th>
+            <th>Confirmed Installation Date</th>
+            <th>Sale</th>
+            <th>COGS</th>
+            <th>Estimated Profit</th>
+            <th>Completion Date</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Dynamic Rows -->
+        </tbody>
+      </table>
+    </div>
+    <button id="back-to-view-from-table" class="btn secondary">Back</button>
+  </div>
+</section>
+
+
+
 
 
   <!-- Pop up Modal -->

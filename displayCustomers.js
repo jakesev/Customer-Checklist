@@ -1,83 +1,118 @@
-// DOM Elements
-const mainScreen = document.getElementById("main-screen");
-const viewCustomersScreen = document.getElementById("view-customers-screen");
-const convertedCustomersTable = document.getElementById("converted-customers-table");
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-const btnViewCustomers = document.getElementById("view-customers-button"); // Add this in your main buttons
-const btnFollowUp = document.getElementById("btn-follow-up");
-const btnConverted = document.getElementById("btn-converted");
-const btnCompleted = document.getElementById("btn-completed");
-const btnLost = document.getElementById("btn-lost");
+export function handleViewCustomers(db) {
+  // DOM Elements
+  const viewCustomersScreen = document.getElementById("view-customers-screen");
+  const customersTableScreen = document.getElementById("customers-table-screen");
 
-const backToMainFromView = document.getElementById("back-to-main-from-view");
-const backToViewFromTable = document.getElementById("back-to-view-from-table");
-const convertedCustomersBody = document.getElementById("converted-customers-body");
+  const btnFollowUp = document.getElementById("btn-follow-up");
+  const btnConverted = document.getElementById("btn-converted");
+  const btnCompleted = document.getElementById("btn-completed");
+  const btnLost = document.getElementById("btn-lost");
 
-// Navigation Functions
-function showViewCustomersScreen() {
-  mainScreen.style.display = "none";
-  viewCustomersScreen.style.display = "block";
-}
+  const backToViewFromTable = document.getElementById("back-to-view-from-table");
 
-function showConvertedCustomersTable() {
-  viewCustomersScreen.style.display = "none";
-  convertedCustomersTable.style.display = "block";
+  const tableTitle = document.getElementById("table-title");
+  const tableHeaders = document.getElementById("table-headers");
+  const tableBody = document.getElementById("table-body");
 
-  // Populate the Converted Customers Table
-  loadConvertedCustomers();
-}
+  // Map field names to database keys
+  const fieldMappings = {
+    "Name": "name",
+    "Email": "email",
+    "Number": "number",
+    "Measured Date": "measuredDate",
+    "Check Map & Quote Supply": "checkMapAndQuoteSupply",
+    "Check Supply": "checkSupply",
+    "Check Supply Pickup Location": "checkSupplyPickupLocation",
+    "Pickup Location Date": "pickupLocationDate",
+    "Check Installer": "checkInstaller",
+    "Confirmed Installation Date": "confirmedInstallationDate",
+    "Sale": "sale",
+    "COGS": "cogs",
+    "Estimated Profit": "estimatedProfit",
+    "Completion Date": "completionDate",
+    "Reason": "reason",
+  };
 
-function backToView() {
-  convertedCustomersTable.style.display = "none";
-  viewCustomersScreen.style.display = "block";
-}
+  const pathTitles = {
+    "follow-up-customers": "Need to Follow Up Customers",
+    "converted-customers": "Converted Customers",
+    "completed-installations": "Completed Installations",
+    "lost-customers": "Lost Customers",
+  };
 
-function backToMain() {
-  viewCustomersScreen.style.display = "none";
-  mainScreen.style.display = "block";
-}
+  // Show the table screen
+  function showTableScreen(path, headers) {
+    viewCustomersScreen.style.display = "none"; // Hide View Customers Screen
+    customersTableScreen.style.display = "block"; // Show Table Screen
 
-// Event Listeners
-btnViewCustomers.addEventListener("click", showViewCustomersScreen);
-btnConverted.addEventListener("click", showConvertedCustomersTable);
-backToViewFromTable.addEventListener("click", backToView);
-backToMainFromView.addEventListener("click", backToMain);
+    tableTitle.textContent = pathTitles[path] || "Customers Table"; // Update title
+    tableHeaders.innerHTML = ""; // Clear existing headers
 
-// Fetch Converted Customers and Populate Table
-function loadConvertedCustomers() {
-  const customersRef = ref(db, "converted-customers"); // Example database path
-  convertedCustomersBody.innerHTML = ""; // Clear existing rows
+    headers.forEach((header) => {
+      const th = document.createElement("th");
+      th.textContent = header; // Add header text
+      tableHeaders.appendChild(th);
+    });
 
-  onValue(customersRef, (snapshot) => {
-    const customers = snapshot.val();
+    tableBody.innerHTML = ""; // Clear existing rows
+    const customersRef = ref(db, path);
 
-    if (customers) {
-      Object.values(customers).forEach((customer) => {
-        const row = document.createElement("tr");
+    onValue(customersRef, (snapshot) => {
+      const data = snapshot.val();
 
-        row.innerHTML = `
-          <td>${customer.name || "N/A"}</td>
-          <td>${customer.email || "N/A"}</td>
-          <td>${customer.number || "N/A"}</td>
-          <td>${customer.measuredDate || "N/A"}</td>
-          <td>${customer.checkMap || "N/A"}</td>
-          <td>${customer.checkSupply || "N/A"}</td>
-          <td>${customer.checkPickupLocation || "N/A"}</td>
-          <td>${customer.pickupDate || "N/A"}</td>
-          <td>${customer.checkInstaller || "N/A"}</td>
-          <td>${customer.confirmedInstallDate || "N/A"}</td>
-          <td>${customer.sale || "N/A"}</td>
-          <td>${customer.cogs || "N/A"}</td>
-          <td>${customer.estimatedProfit || "N/A"}</td>
-          <td>${customer.completionDate || "N/A"}</td>
-        `;
+      if (data) {
+        Object.values(data).forEach((customer) => {
+          const row = document.createElement("tr");
+          headers.forEach((header) => {
+            const dbField = fieldMappings[header]; // Map to database field
+            const td = document.createElement("td");
+            td.textContent = customer[dbField] || "N/A"; // Populate cell
+            row.appendChild(td);
+          });
+          tableBody.appendChild(row); // Add row to table
+        });
+      } else {
+        const emptyRow = document.createElement("tr");
+        emptyRow.innerHTML = `<td colspan="${headers.length}">No data available.</td>`;
+        tableBody.appendChild(emptyRow);
+      }
+    });
+  }
 
-        convertedCustomersBody.appendChild(row);
-      });
-    } else {
-      const emptyRow = document.createElement("tr");
-      emptyRow.innerHTML = `<td colspan="14">No converted customers available.</td>`;
-      convertedCustomersBody.appendChild(emptyRow);
-    }
+  // Back to View Customers Screen
+  backToViewFromTable.addEventListener("click", () => {
+    customersTableScreen.style.display = "none"; // Hide Table Screen
+    viewCustomersScreen.style.display = "block"; // Show View Customers Screen
   });
+
+  // Event Listeners for Buttons
+  btnFollowUp.addEventListener("click", () =>
+    showTableScreen("follow-up-customers", ["Name", "Email", "Number", "Measured Date"])
+  );
+  btnConverted.addEventListener("click", () =>
+    showTableScreen("converted-customers", [
+      "Name",
+      "Email",
+      "Number",
+      "Measured Date",
+      "Check Map & Quote Supply",
+      "Check Supply",
+      "Check Supply Pickup Location",
+      "Pickup Location Date",
+      "Check Installer",
+      "Confirmed Installation Date",
+      "Sale",
+      "COGS",
+      "Estimated Profit",
+      "Completion Date",
+    ])
+  );
+  btnCompleted.addEventListener("click", () =>
+    showTableScreen("completed-installations", ["Name", "Email", "Completion Date"])
+  );
+  btnLost.addEventListener("click", () =>
+    showTableScreen("lost-customers", ["Name", "Email", "Reason"])
+  );
 }

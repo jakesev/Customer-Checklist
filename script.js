@@ -1,11 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 import { handleAddCustomer } from "./addCustomer.js";
-
+import { handleViewCustomers } from "./displayCustomers.js"; // Import the view customers logic
 
 // Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA8CzhnwFAc2LnnO49xKrAti8e-HTgs-U",
+  apiKey: "AIzaSyA8CzhnwFAc2LnnO49xKrAti8eE-HTgs-U",
   authDomain: "customer-checklist.firebaseapp.com",
   databaseURL: "https://customer-checklist-default-rtdb.asia-southeast1.firebasedatabase.app/",
   projectId: "customer-checklist",
@@ -21,24 +21,40 @@ const db = getDatabase(app);
 // DOM Elements
 const mainScreen = document.getElementById("main-screen");
 const addCustomerScreen = document.getElementById("add-customer-screen");
+const viewCustomersScreen = document.getElementById("view-customers-screen");
+const customersTableScreen = document.getElementById("customers-table-screen");
+
 const addCustomerButton = document.getElementById("add-customer-button");
+const viewCustomersButton = document.getElementById("placeholder-button");
 const backToMainFromAdd = document.getElementById("back-to-main-from-add");
-const form = document.getElementById("data-form");
+const backToMainFromView = document.getElementById("back-to-main-from-view");
 
 // Navigation Functions
+function showMainScreen() {
+  [addCustomerScreen, viewCustomersScreen, customersTableScreen].forEach((screen) => {
+    screen.style.display = "none"; // Hide all screens
+  });
+  mainScreen.style.display = "block"; // Show main screen
+}
+
 function showAddCustomerScreen() {
   mainScreen.style.display = "none"; // Hide main screen
   addCustomerScreen.style.display = "block"; // Show add customer screen
 }
 
-function showMainScreen() {
-  addCustomerScreen.style.display = "none"; // Hide add customer screen
-  mainScreen.style.display = "block"; // Show main screen
+function showViewCustomersScreen() {
+  mainScreen.style.display = "none"; // Hide main screen
+  viewCustomersScreen.style.display = "block"; // Show view customers screen
 }
 
 // Event Listeners
 addCustomerButton.addEventListener("click", showAddCustomerScreen);
+viewCustomersButton.addEventListener("click", showViewCustomersScreen);
 backToMainFromAdd.addEventListener("click", showMainScreen);
+backToMainFromView.addEventListener("click", showMainScreen);
 
 // Initialize Add Customer Functionality
-handleAddCustomer(db, form, showMainScreen); // Only call once
+handleAddCustomer(db, document.getElementById("data-form"), showMainScreen); // Add customer logic
+
+// Initialize View Customers Functionality
+handleViewCustomers(db); // View customers logic

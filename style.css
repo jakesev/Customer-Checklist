@@ -209,3 +209,82 @@ body {
   transform: translateY(0);
 }
 
+
+/* Customers Table Container */
+.customers-table-container {
+  max-width: 95%; /* Limit the table width to 95% of the screen */
+  margin: 0 auto; /* Center the table horizontally */
+  overflow-x: auto; /* Allow horizontal scrolling for small screens */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Customers Table */
+.customers-table {
+  width: 100%; /* Take full width of the container */
+  border-collapse: collapse; /* Remove space between cells */
+  margin: 20px 0; /* Add space above and below the table */
+}
+
+.customers-table th, .customers-table td {
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+  padding: 10px; /* Add padding for spacing */
+  text-align: center; /* Center-align text */
+  font-size: 14px; /* Adjust font size for better readability */
+}
+
+.customers-table th {
+  background: rgba(255, 255, 255, 0.2); /* Slightly transparent header background */
+  color: white; /* White text for header */
+  font-weight: bold; /* Bold text */
+}
+
+.customers-table td {
+  background: rgba(255, 255, 255, 0.1); /* Slightly transparent cell background */
+  color: white; /* White text */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .customers-table th, .customers-table td {
+    font-size: 12px; /* Reduce font size for smaller screens */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .customers-table-container {
+    max-width: 100%; /* Use full width on small screens */
+  }
+}
+
+
+#customers-table-screen {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.customers-table {
+  width: 100%; /* Full-width table */
+  border-collapse: collapse;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.customers-table th, .customers-table td {
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Table borders */
+  padding: 10px;
+  text-align: center;
+}
+
+.customers-table th {
+  background: rgba(255, 255, 255, 0.2); /* Header background */
+  color: white;
+  font-weight: bold;
+}
+
+.customers-table td {
+  background: rgba(255, 255, 255, 0.1); /* Cell background */
+  color: white;
+}
