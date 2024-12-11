@@ -105,12 +105,11 @@ function loadCustomers() {
         viewChecklistButton.addEventListener('click', () => showChecklistScreen(key, customer));
         li.appendChild(viewChecklistButton);
         customerList.appendChild(li);
-      });    
-    } else {
-      console.log("No customers found.");
-      customerList.innerHTML = '<li>No customers available.</li>';
+      });
     }
+
   });
+}
   
 
 
