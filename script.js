@@ -112,7 +112,6 @@ function loadCustomers() {
 }
   
 
-
 function showChecklistScreen(customerId, customer) {
   // Clear current content and dynamically create the checklist screen
   showCustomersScreen.style.display = 'none'; // Hide the customer list screen
