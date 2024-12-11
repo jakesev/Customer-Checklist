@@ -34,6 +34,10 @@ function showChecklistScreen(customerId, customer) {
   console.log("Show checklist for:", customerId, customer);
 }
 
+//display Customer table body
+const customerTableBody = document.getElementById("customer-table-body");
+loadCustomers(db, customerTableBody, showChecklistScreen);
+
 // Initialize Modules
 addCustomer(db, form, showMainScreen);
 loadCustomers(db, customerList, showChecklistScreen);
