@@ -4,57 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Management</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Customer Management</h1>
-  <div id="connection-status" style="margin: 20px; font-weight: bold;"></div>
-
   <!-- Main Screen -->
-  <div id="main-screen">
-    <button id="add-customer-button">Add Customer</button>
-    <button id="show-customers-button">Show Customers</button>
-  </div>
+  <section id="main-screen" class="screen active">
+    <div class="form-card">
+      <h1 class="form-title">Customer Management</h1>
+      <button id="add-customer-button" class="btn primary" type="button">
+        <i class='bx bx-user-plus'></i> Add Customer
+      </button>
+      <button id="placeholder-button" class="btn secondary" type="button">
+        <i class='bx bx-dots-horizontal-rounded'></i> View Customers
+      </button>
+      
+
+
+    </div>
+  </section>
 
   <!-- Add Customer Screen -->
-  <div id="add-customer-screen" style="display: none;">
-    <h2>Add a New Customer</h2>
-    <form id="data-form">
-      <input type="text" id="name" placeholder="Enter customer name" required />
-      <input type="email" id="email" placeholder="Enter customer email" required />
-      <input type="text" id="number" placeholder="Enter phone number" required />
-      <input type="date" id="initial-quote-date" placeholder="Initial Quote Date" required />
-      <input type="text" id="address" placeholder="Enter customer address" required />
-      <button type="submit">Submit</button>
+  <section id="add-customer-screen" class="screen hidden">
+    <form id="data-form" class="form-card">
+      <h2 class="form-title">Add a New Customer</h2>
+      <div class="input-box">
+        <i class='bx bxs-user'></i>
+        <input type="text" id="name" placeholder="Full Name" required />
+      </div>
+      <div class="input-box">
+        <i class='bx bxs-envelope'></i>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      <div class="input-box">
+        <i class='bx bxs-phone'></i>
+        <input type="text" id="number" placeholder="Phone Number" required />
+      </div>
+      <div class="input-box">
+        <i class='bx bxs-calendar'></i>
+        <input type="date" id="measure-date" placeholder="Measure Date" required />
+      </div>
+      <div class="input-box">
+        <i class='bx bxs-map'></i>
+        <input type="text" id="address" placeholder="Address" required />
+      </div>
+      <button class="btn primary submit-btn" type="submit">Submit</button>
+      <button id="back-to-main-from-add" class="btn secondary" type="button">Back</button>
     </form>
-    <button id="back-to-main-from-add">Back</button>
-  </div>
-  
+  </section>
 
-  <!-- Show Customers Screen -->
-  <div id="show-customers-screen" style="display: none;">
-    <h2>Customer List</h2>
-    <table id="customer-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Number</th>
-          <th>Initial Quote Date</th>
-          <th>Address</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="customer-table-body">
-        <!-- Rows will be dynamically added here -->
-      </tbody>
-    </table>
-    <button id="back-to-main-from-show">Back</button>
-  </div>
-  
 
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js"></script>
+  <!-- Pop up Modal -->
+<div id="custom-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modal-title">Customer Exists</h3>
+    <p id="modal-message">
+      This customer already exists. Would you like to add this as a duplicate entry?
+    </p>
+    <div class="modal-actions">
+      <button id="modal-confirm" class="btn primary">Add Duplicate</button>
+      <button id="modal-cancel" class="btn secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="hidden">Customer added successfully as order #<span id="order-number"></span>.</div>
+
   <script src="script.js" type="module"></script>
 </body>
 </html>
