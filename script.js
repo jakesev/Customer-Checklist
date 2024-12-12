@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
 import { handleAddCustomer } from "./addCustomer.js";
 import { handleViewCustomers } from "./displayCustomers.js"; // Import the view customers logic
 
@@ -13,6 +14,45 @@ const firebaseConfig = {
   messagingSenderId: "573424994833",
   appId: "1:573424994833:web:43f25adb3edfca693a7fb0",
 };
+
+document.getElementById('data-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Collect form data
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const number = document.getElementById('number').value;
+  const measureDate = document.getElementById('measure-date').value;
+  const address = document.getElementById('address').value;
+  const status = document.getElementById('status').value;
+
+  // Validate status
+  if (!status) {
+      alert("Please select a status!");
+      return;
+  }
+
+  // Prepare the data object
+  const customerData = {
+      name,
+      email,
+      number,
+      measureDate,
+      address,
+      status, // Add status to the database entry
+  };
+
+  console.log("Submitting Customer Data:", customerData);
+
+  // Save to Firebase
+  try {
+      const customersRef = ref(db, 'customers');
+      await push(customersRef, customerData);
+  } catch (error) {
+      console.error('Error adding customer:', error);
+      alert('Failed to add customer.');
+  }
+});
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

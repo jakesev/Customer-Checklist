@@ -45,6 +45,17 @@
         <i class='bx bxs-map'></i>
         <input type="text" id="address" placeholder="Address" required />
       </div>
+
+      <div class="input-box">
+        <i class='bx bxs-label'></i>
+        <select id="status" required>
+          <option value="">Select Status</option>
+          <option value="Closed In-House">Closed In-House</option>
+          <option value="Pending">Pending</option>
+          <option value="Lost">Lost</option>
+        </select>
+      </div>      
+      
       <button class="btn primary submit-btn" type="submit">Submit</button>
       <button id="back-to-main-from-add" class="btn secondary" type="button">Back</button>
     </form>
@@ -68,19 +79,23 @@
 <section id="customers-table-screen" class="screen hidden">
   <div class="form-card">
     <h2 id="table-title" class="form-title">Customers Table</h2>
-    <table class="customers-table">
-      <thead>
-        <tr id="table-headers">
-          <!-- Dynamic Headers -->
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        <!-- Dynamic Rows -->
-      </tbody>
-    </table>
+    <div class="customers-table-container">
+      <table class="customers-table">
+        <thead>
+          <tr id="table-headers">
+            <!-- Dynamic Headers -->
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Dynamic Rows -->
+        </tbody>
+      </table>
+    </div>
     <button id="back-to-view-from-table" class="btn secondary">Back</button>
   </div>
 </section>
+
+
 
 <!-- Converted Customer Screen -->
 <section id="customers-table-screen" class="screen hidden">
@@ -114,8 +129,6 @@
     <button id="back-to-view-from-table" class="btn secondary">Back</button>
   </div>
 </section>
-
-
 
 
 

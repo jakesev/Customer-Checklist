@@ -210,40 +210,82 @@ body {
 }
 
 
-/* Customers Table Container */
+/* Customers Table Container *//* Table Container for Scrollable Rows */
+/* Table Container for Scrollable Rows */
+/* Ensure the container scrolls when content exceeds the height or width */
+/* Ensure table fits within the screen and allows scrolling */
+/* Scrollable Table Container */
 .customers-table-container {
-  max-width: 95%; /* Limit the table width to 95% of the screen */
-  margin: 0 auto; /* Center the table horizontally */
-  overflow-x: auto; /* Allow horizontal scrolling for small screens */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-height: 70vh; /* Allow vertical scrolling if content exceeds 70% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  background: rgba(255, 255, 255, 0.1); /* Subtle background to match the theme */
+  border-radius: 8px; /* Smooth edges */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Soft border */
+  margin: 20px 0; /* Space above and below the table */
 }
 
-/* Customers Table */
+/* Table Styling */
 .customers-table {
-  width: 100%; /* Take full width of the container */
-  border-collapse: collapse; /* Remove space between cells */
-  margin: 20px 0; /* Add space above and below the table */
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Clean cell borders */
+  table-layout: auto; /* Automatically adjust column width */
 }
 
-.customers-table th, .customers-table td {
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-  padding: 10px; /* Add padding for spacing */
-  text-align: center; /* Center-align text */
-  font-size: 14px; /* Adjust font size for better readability */
+/* Header Styling */
+.customers-table thead th {
+  position: sticky; /* Keeps the header fixed during scroll */
+  top: 0; /* Sticks to the top of the container */
+  background: rgba(0, 0, 50, 0.8); /* Match theme with semi-transparent blue */
+  color: white; /* White text for contrast */
+  text-align: center; /* Align text to the left */
+  padding: 10px; /* Add space around text */
+  z-index: 2; /* Keep header on top */
+  font-size: 16px; /* Slightly larger font */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4); /* Highlight header row */
 }
 
-.customers-table th {
-  background: rgba(255, 255, 255, 0.2); /* Slightly transparent header background */
-  color: white; /* White text for header */
-  font-weight: bold; /* Bold text */
+/* Table Body Styling */
+.customers-table tbody td {
+  padding: 12px 16px; /* Add spacing */
+  color: white; /* White text for readability */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border between rows */
+  font-size: 14px; /* Consistent font size */
 }
 
-.customers-table td {
-  background: rgba(255, 255, 255, 0.1); /* Slightly transparent cell background */
-  color: white; /* White text */
+/* Alternate Row Colors */
+.customers-table tbody tr:nth-child(odd) {
+  background-color: rgba(0, 0, 50, 0.7); /* Slightly darker blue */
 }
+
+.customers-table tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 50, 0.5); /* Slightly lighter blue */
+}
+
+/* Table Hover Effect */
+.customers-table tbody tr:hover {
+  background-color: rgba(0, 0, 50, 1); /* Highlight row on hover */
+}
+
+/* Scrollbar Styling */
+.customers-table-container::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.customers-table-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5); /* Thumb color */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.customers-table-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* Track color */
+}
+
+/* Ensure table remains responsive */
+.customers-table {
+  min-width: 600px; /* Prevent shrinking on small screens */
+}
+
 
 /* Responsive Styling */
 @media (max-width: 768px) {
@@ -287,4 +329,44 @@ body {
 .customers-table td {
   background: rgba(255, 255, 255, 0.1); /* Cell background */
   color: white;
+}
+
+/* Dropdown Wrapper */
+.input-box select {
+  width: 100%; /* Match the width of other input fields */
+  padding: 12px 12px 12px 45px; /* Same padding as input fields */
+  border-radius: 50px; /* Rounded corners to match input fields */
+  border: none; /* Remove default borders */
+  outline: 3px solid transparent; /* Add focus outline */
+  background: rgba(255, 255, 255, 0.1); /* Match the transparent background */
+  color: white; /* Text color */
+  font-size: 16px; /* Match font size */
+  appearance: none; /* Remove browser-specific dropdown styles */
+  transition: 0.3s; /* Smooth transition on focus */
+}
+
+/* Placeholder Option */
+.input-box select option:first-child {
+  color: rgba(255, 255, 255, 0.6); /* Lighter color for placeholder */
+}
+
+/* Focus State */
+.input-box select:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.3); /* Add focus effect */
+}
+
+/* Dropdown Arrow Icon (Optional) */
+.input-box select {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 24 24%22 fill%3D%22white%22%3E%3Cpath d%3D%22M7 10l5 5 5-5z%22/%3E%3C/svg%3E'); /* Add a down arrow */
+  background-repeat: no-repeat;
+  background-position: right 20px center; /* Position the arrow */
+  background-size: 16px; /* Size of the arrow */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .input-box select {
+    font-size: 14px; /* Slightly smaller font for smaller screens */
+    padding: 10px 10px 10px 35px; /* Adjust padding */
+  }
 }
