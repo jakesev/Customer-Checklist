@@ -1,37 +1,19 @@
-import { ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-
-function showModal(title, message, onConfirm = null) {
-  const modal = document.getElementById("custom-modal");
-  const modalTitle = document.getElementById("modal-title");
-  const modalMessage = document.getElementById("modal-message");
-  const modalConfirm = document.getElementById("modal-confirm");
-  const modalCancel = document.getElementById("modal-cancel");
-
-  modalTitle.textContent = title;
-  modalMessage.textContent = message;
-  modal.classList.remove("hidden");
-
-  const confirmHandler = () => {
-    if (onConfirm) onConfirm();
-    hideModal();
-  };
-
-  const cancelHandler = () => hideModal();
-
-  modalConfirm.addEventListener("click", confirmHandler, { once: true });
-  modalCancel.addEventListener("click", cancelHandler, { once: true });
-}
-
-function hideModal() {
-  const modal = document.getElementById("custom-modal");
-  modal.classList.add("hidden");
-}
+import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 export function handleAddCustomer(db, form) {
   const toast = document.getElementById("toast");
-  const orderNumberSpan = document.getElementById("order-number");
+  const errorAlert = document.getElementById("error-alert"); // Error alert element
+
+  const showErrorAlert = (message) => {
+    errorAlert.textContent = message;
+    errorAlert.classList.add("show");
+    setTimeout(() => {
+      errorAlert.classList.remove("show");
+    }, 3000); // Fade out after 3 seconds
+  };
 
   const showToast = (orderNumber) => {
+    const orderNumberSpan = document.getElementById("order-number");
     orderNumberSpan.textContent = orderNumber;
     toast.classList.add("show");
     setTimeout(() => {
@@ -50,51 +32,42 @@ export function handleAddCustomer(db, form) {
     const status = document.getElementById("status").value;
 
     if (!status) {
-      showModal("Validation Error", "Please select a status.");
+      showErrorAlert("Please select a status.");
       return;
     }
 
     try {
       const customersRef = ref(db, "customers");
 
+      // Fetch current customers from Firebase
       const customers = await new Promise((resolve) => {
-        onValue(customersRef, (snapshot) => {
-          resolve(snapshot.val());
-        }, { onlyOnce: true });
+        onValue(
+          customersRef,
+          (snapshot) => {
+            resolve(snapshot.val());
+          },
+          { onlyOnce: true }
+        );
       });
 
-      let duplicateCustomerKey = null;
       let duplicateCustomer = null;
 
       if (customers) {
-        Object.entries(customers).forEach(([key, customer]) => {
+        // Check for duplicate customers
+        Object.values(customers).forEach((customer) => {
           if (customer.name === name && customer.email === email) {
-            duplicateCustomerKey = key;
             duplicateCustomer = customer;
           }
         });
       }
 
       if (duplicateCustomer) {
-        const duplicateCount = duplicateCustomer.duplicateCount || 1;
-
-        showModal(
-          "Duplicate Customer",
-          `This customer already exists. This is order #${duplicateCount + 1}. Would you like to proceed?`,
-          async () => {
-            const updatedCustomer = {
-              ...duplicateCustomer,
-              duplicateCount: duplicateCount + 1,
-            };
-            await update(ref(db, `customers/${duplicateCustomerKey}`), updatedCustomer);
-
-            showToast(duplicateCount + 1);
-            form.reset(); // Clear form fields but stay on the current screen
-          }
-        );
+        // Show error alert for duplicate
+        showErrorAlert("This customer already exists. It is a duplicate record.");
         return;
       }
 
+      // Add new customer if no duplicates found
       const newCustomerRef = push(customersRef);
       await set(newCustomerRef, {
         name,
@@ -104,14 +77,14 @@ export function handleAddCustomer(db, form) {
         address,
         status,
         createdAt: new Date().toISOString(),
-        duplicateCount: 1,
+        duplicateCount: 1, // Initialize duplicateCount for new customers
       });
 
-      showToast(1); // Show toast for new customer
+      showToast(1); // Show success toast
       form.reset(); // Clear form fields
     } catch (error) {
       console.error("Error adding customer:", error);
-      showModal("Error", "Failed to add customer. Please try again.");
+      showErrorAlert("Failed to add customer. Please try again.");
     }
   });
 }
